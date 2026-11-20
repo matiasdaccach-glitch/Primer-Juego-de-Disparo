@@ -4,68 +4,547 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>EcoReto: Misión Biodiversidad</title>
-  <link rel="stylesheet" href="styles.css">
-  <script src="app.js" defer></script>
+
+  <style>
+    :root {
+      --fondo: #071b2d;
+      --panel: #0c2538;
+      --verde: #b5f36b;
+      --texto: #eff6ef;
+      --suave: #a9bdc0;
+      --rojo: #ff958c;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--fondo);
+      color: var(--texto);
+      font-family: Arial, sans-serif;
+    }
+
+    header,
+    footer {
+      padding: 20px 8%;
+      border-bottom: 1px solid #294153;
+      color: var(--suave);
+      font-size: 13px;
+      letter-spacing: 2px;
+    }
+
+    header strong {
+      color: var(--texto);
+    }
+
+    main {
+      width: min(900px, 90%);
+      min-height: calc(100vh - 120px);
+      margin: auto;
+    }
+
+    .pantalla {
+      padding: 70px 0;
+    }
+
+    .oculta {
+      display: none;
+    }
+
+    .etiqueta {
+      color: var(--verde);
+      font-size: 12px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 20px 0;
+      font-size: clamp(44px, 8vw, 76px);
+      line-height: 1;
+    }
+
+    h1 span,
+    .verde {
+      color: var(--verde);
+    }
+
+    p {
+      color: var(--suave);
+      line-height: 1.7;
+    }
+
+    .intro {
+      max-width: 520px;
+      font-size: 18px;
+    }
+
+    button {
+      font: inherit;
+    }
+
+    .boton-principal {
+      margin-top: 20px;
+      padding: 15px 22px;
+      border: 0;
+      border-radius: 4px;
+      background: var(--verde);
+      color: #132515;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .boton-principal:hover {
+      filter: brightness(1.08);
+    }
+
+    .boton-principal:disabled {
+      opacity: .5;
+      cursor: not-allowed;
+    }
+
+    .cabecera-juego {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+    }
+
+    h2 {
+      font-size: 34px;
+    }
+
+    .barra-fondo {
+      height: 6px;
+      margin: 25px 0;
+      background: #233d4c;
+    }
+
+    #barra-progreso {
+      width: 10%;
+      height: 100%;
+      background: var(--verde);
+      transition: width .25s;
+    }
+
+    .tarjeta {
+      padding: clamp(20px, 5vw, 38px);
+      border: 1px solid #294153;
+      border-radius: 8px;
+      background: var(--panel);
+    }
+
+    #categoria {
+      color: var(--verde);
+      font-size: 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    #pregunta {
+      margin: 20px 0;
+      font-size: clamp(22px, 4vw, 30px);
+      line-height: 1.4;
+    }
+
+    #respuestas {
+      display: grid;
+      gap: 12px;
+    }
+
+    .respuesta {
+      padding: 16px;
+      border: 1px solid #365165;
+      border-radius: 5px;
+      background: #102d3f;
+      color: var(--texto);
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .respuesta:hover:not(:disabled) {
+      border-color: var(--verde);
+    }
+
+    .respuesta:disabled {
+      cursor: default;
+    }
+
+    .respuesta.correcta {
+      border-color: var(--verde);
+      background: #203a2b;
+    }
+
+    .respuesta.incorrecta {
+      border-color: var(--rojo);
+      background: #452a31;
+    }
+
+    #retroalimentacion {
+      min-height: 48px;
+      margin: 18px 0 0;
+    }
+
+    #siguiente {
+      display: block;
+      margin-left: auto;
+    }
+
+    .resultado {
+      text-align: center;
+    }
+
+    #puntaje-final {
+      margin: 20px 0;
+      color: var(--verde);
+      font-size: 76px;
+      font-weight: bold;
+    }
+
+    .enlace-formulario {
+      display: inline-block;
+      margin: 20px;
+      color: var(--verde);
+    }
+
+    footer {
+      border-top: 1px solid #294153;
+      border-bottom: 0;
+      text-align: center;
+    }
+
+    @media (max-width: 600px) {
+      .pantalla {
+        padding: 45px 0;
+      }
+
+      .cabecera-juego {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      h2 {
+        margin-bottom: 0;
+      }
+    }
+  </style>
 </head>
+
 <body>
-  <header class="topbar">
-    <a class="brand" href="#">✦ ECORRETO</a>
-    <span class="top-meta">MISIÓN BIODIVERSIDAD · CIENCIAS</span>
-  </header>
+  <header><strong>✦ ECORRETO</strong> · MISIÓN BIODIVERSIDAD</header>
 
   <main>
-    <section id="pantalla-inicio" class="hero">
-      <div>
-        <p class="eyebrow">EXPLORA · APRENDE · PROTEGE</p>
-        <h1>El futuro está<br>en tus <span>manos.</span></h1>
-        <p class="intro">
-          Supera los retos, aprende cómo funcionan los ecosistemas
-          y descubre cómo ayudar a proteger nuestro planeta.
-        </p>
-        <button class="primary-button" id="iniciar">INICIAR MISIÓN ↗</button>
-        <p class="duration">10 retos · 5 minutos</p>
-      </div>
-      <div class="planet" aria-label="Planeta verde">🌿</div>
+    <section id="inicio" class="pantalla">
+      <div class="etiqueta">Explora · Aprende · Protege</div>
+      <h1>El futuro está<br>en tus <span>manos.</span></h1>
+      <p class="intro">
+        Responde los retos, aprende cómo funcionan los ecosistemas
+        y descubre cómo ayudar a proteger nuestro planeta.
+      </p>
+      <button id="iniciar" class="boton-principal">INICIAR MISIÓN →</button>
+      <p>10 retos · 5 minutos · Ciencias Naturales</p>
     </section>
 
-    <section id="pantalla-juego" class="game hidden">
-      <div class="game-heading">
+    <section id="juego" class="pantalla oculta">
+      <div class="cabecera-juego">
         <div>
-          <p class="eyebrow">MISIÓN EN CURSO</p>
-          <h2>Reto <span id="numero">1</span><small> / 10</small></h2>
+          <div class="etiqueta">Misión en curso</div>
+          <h2>Reto <span id="numero">1</span> / 10</h2>
         </div>
-        <div class="score">✦ <span id="puntaje">0</span> PUNTOS</div>
+        <div>Puntaje: <strong id="puntaje">0</strong></div>
       </div>
 
-      <div class="progress">
-        <div id="progreso"></div>
+      <div class="barra-fondo">
+        <div id="barra-progreso"></div>
       </div>
 
-      <article class="question-card">
-        <p id="categoria" class="category"></p>
+      <article class="tarjeta">
+        <div id="categoria"></div>
         <h3 id="pregunta"></h3>
-        <div id="respuestas" class="answers"></div>
-        <p id="retroalimentacion" class="feedback" aria-live="polite"></p>
-        <button id="siguiente" class="primary-button" disabled>
+        <div id="respuestas"></div>
+        <p id="retroalimentacion" aria-live="polite"></p>
+        <button id="siguiente" class="boton-principal" disabled>
           SIGUIENTE RETO →
         </button>
       </article>
     </section>
 
-    <section id="pantalla-final" class="results hidden">
-      <p class="eyebrow">MISIÓN COMPLETADA</p>
-      <h2 id="titulo-final"></h2>
-      <p id="resumen-final"></p>
-      <div class="final-score"><span id="puntaje-final">0</span><small> / 100</small></div>
+    <section id="resultado" class="pantalla resultado oculta">
+      <div class="etiqueta">Misión completada</div>
+      <h2 id="titulo-resultado">¡Buen trabajo!</h2>
+      <p id="resumen"></p>
+      <div id="puntaje-final">0</div>
       <p id="mensaje-final"></p>
-      <button class="primary-button" id="jugar-de-nuevo">JUGAR DE NUEVO ↻</button>
-      <a id="enlace-formulario" class="form-link" href="#" target="_blank" rel="noopener">
+      <button id="jugar-de-nuevo" class="boton-principal">JUGAR DE NUEVO ↻</button>
+      <br>
+      <a id="enlace-formulario" class="enlace-formulario" href="#" target="_blank" rel="noopener">
         EVALUAR EL JUEGO ↗
       </a>
-      <p id="nota-formulario" class="form-note"></p>
+      <p id="nota-formulario"></p>
     </section>
   </main>
 
-  <footer>ECORRETO · APRENDER PARA CUIDAR ✦</footer>
+  <footer>APRENDER PARA CUIDAR · ECORRETO</footer>
+
+  <script>
+    // Cuando tengas tu Google Form, pega su enlace entre estas comillas.
+    const ENLACE_FORMULARIO = "https://docs.google.com/forms/d/e/1FAIpQLSftcUEmRj8zMdW8o8-zjExbpMc_j_nqznfWNAJREhZa_B7pMg/viewform?usp=publish-editor";
+
+    const preguntas = [
+      {
+        categoria: "Ecosistemas",
+        texto: "¿Qué describe mejor a un ecosistema?",
+        opciones: [
+          "Un grupo de animales de la misma especie",
+          "Los seres vivos y elementos no vivos que interactúan en un lugar",
+          "Una región que solo tiene plantas"
+        ],
+        correcta: 1,
+        explicacion: "Un ecosistema incluye seres vivos, agua, suelo, aire y las relaciones entre ellos."
+      },
+      {
+        categoria: "Cadenas alimentarias",
+        texto: "¿Qué papel cumplen las plantas en una cadena alimentaria?",
+        opciones: [
+          "Productores: fabrican su alimento usando la luz solar",
+          "Consumidores: cazan otros organismos",
+          "Descomponedores: convierten rocas en nutrientes"
+        ],
+        correcta: 0,
+        explicacion: "Las plantas producen su alimento mediante la fotosíntesis."
+      },
+      {
+        categoria: "Energía",
+        texto: "¿Qué ocurre con la energía al subir de nivel en una cadena alimentaria?",
+        opciones: [
+          "Aumenta en cada nivel",
+          "Se mantiene exactamente igual",
+          "Disminuye: solo una parte pasa al siguiente nivel"
+        ],
+        correcta: 2,
+        explicacion: "En cada nivel se pierde energía, por ejemplo en forma de calor."
+      },
+      {
+        categoria: "Biodiversidad",
+        texto: "¿Por qué la biodiversidad puede ayudar a un ecosistema?",
+        opciones: [
+          "Porque todas las especies hacen lo mismo",
+          "Porque la variedad de especies y funciones ayuda a sostener el sistema",
+          "Porque elimina cualquier cambio ambiental"
+        ],
+        correcta: 1,
+        explicacion: "La variedad de especies y funciones puede ayudar al ecosistema a responder ante cambios."
+      },
+      {
+        categoria: "Ciclos naturales",
+        texto: "¿Qué hacen los descomponedores, como hongos y bacterias?",
+        opciones: [
+          "Reciclan nutrientes al descomponer restos de seres vivos",
+          "Producen luz para las plantas",
+          "Impiden que los animales respiren"
+        ],
+        correcta: 0,
+        explicacion: "Los descomponedores devuelven nutrientes al suelo y al agua."
+      },
+      {
+        categoria: "Redes alimentarias",
+        texto: "Si desaparece un depredador, ¿qué efecto podría ocurrir?",
+        opciones: [
+          "Ninguno: las especies no se relacionan",
+          "Su presa podría aumentar y afectar a otras poblaciones",
+          "Todas las plantas se vuelven depredadoras"
+        ],
+        correcta: 1,
+        explicacion: "Las especies están conectadas y un cambio puede afectar a otras poblaciones."
+      },
+      {
+        categoria: "Impacto humano",
+        texto: "¿Cuál es un ejemplo de fragmentación del hábitat?",
+        opciones: [
+          "Un bosque queda dividido por una carretera",
+          "Una semilla germina después de la lluvia",
+          "Un ave construye un nido"
+        ],
+        correcta: 0,
+        explicacion: "Una carretera puede dividir un hábitat y dificultar el movimiento de las especies."
+      },
+      {
+        categoria: "Conservación",
+        texto: "¿Qué acción ayuda a cuidar una cuenca cercana?",
+        opciones: [
+          "Arrojar residuos lejos de la orilla",
+          "Proteger la vegetación junto al agua y reducir la contaminación",
+          "Retirar todas las plantas acuáticas"
+        ],
+        correcta: 1,
+        explicacion: "La vegetación de las orillas ayuda a proteger hábitats y cuidar el agua."
+      },
+      {
+        categoria: "Cambio climático",
+        texto: "¿Qué significa que una especie sea vulnerable al cambio climático?",
+        opciones: [
+          "Podría tener dificultades para adaptarse a cambios de temperatura o lluvia",
+          "No necesita un hábitat",
+          "Puede vivir en cualquier condición"
+        ],
+        correcta: 0,
+        explicacion: "Los cambios rápidos pueden superar la capacidad de adaptación de algunas especies."
+      },
+      {
+        categoria: "Pensamiento sistémico",
+        texto: "¿Cómo conviene estudiar un problema ambiental?",
+        opciones: [
+          "Mirar una sola causa y decidir de inmediato",
+          "Observar causas, efectos y conexiones antes de decidir",
+          "Ignorar los datos y elegir lo más popular"
+        ],
+        correcta: 1,
+        explicacion: "Analizar causas, efectos y relaciones ayuda a proponer mejores soluciones."
+      }
+    ];
+
+    const inicio = document.getElementById("inicio");
+    const juego = document.getElementById("juego");
+    const resultado = document.getElementById("resultado");
+
+    let indice = 0;
+    let puntaje = 0;
+    let yaRespondio = false;
+
+    function mostrarPantalla(pantalla) {
+      inicio.classList.add("oculta");
+      juego.classList.add("oculta");
+      resultado.classList.add("oculta");
+      pantalla.classList.remove("oculta");
+      window.scrollTo(0, 0);
+    }
+
+    function iniciarJuego() {
+      indice = 0;
+      puntaje = 0;
+      document.getElementById("puntaje").textContent = puntaje;
+      mostrarPantalla(juego);
+      mostrarPregunta();
+    }
+
+    function mostrarPregunta() {
+      yaRespondio = false;
+
+      const preguntaActual = preguntas[indice];
+      document.getElementById("numero").textContent = indice + 1;
+      document.getElementById("categoria").textContent = preguntaActual.categoria;
+      document.getElementById("pregunta").textContent = preguntaActual.texto;
+      document.getElementById("barra-progreso").style.width =
+        `${((indice + 1) / preguntas.length) * 100}%`;
+
+      const retroalimentacion = document.getElementById("retroalimentacion");
+      retroalimentacion.textContent = "";
+      retroalimentacion.style.color = "";
+
+      const botonSiguiente = document.getElementById("siguiente");
+      botonSiguiente.disabled = true;
+      botonSiguiente.textContent =
+        indice === preguntas.length - 1 ? "VER RESULTADO →" : "SIGUIENTE RETO →";
+
+      const contenedor = document.getElementById("respuestas");
+      contenedor.replaceChildren();
+
+      preguntaActual.opciones.forEach((opcion, numeroOpcion) => {
+        const boton = document.createElement("button");
+        boton.className = "respuesta";
+        boton.textContent = `${String.fromCharCode(65 + numeroOpcion)}. ${opcion}`;
+        boton.addEventListener("click", () => elegirRespuesta(numeroOpcion));
+        contenedor.appendChild(boton);
+      });
+    }
+
+    function elegirRespuesta(seleccion) {
+      if (yaRespondio) return;
+      yaRespondio = true;
+
+      const preguntaActual = preguntas[indice];
+      const botones = document.querySelectorAll(".respuesta");
+      const esCorrecta = seleccion === preguntaActual.correcta;
+
+      if (esCorrecta) {
+        puntaje += 10;
+        document.getElementById("puntaje").textContent = puntaje;
+      }
+
+      botones.forEach((boton, numeroOpcion) => {
+        boton.disabled = true;
+
+        if (numeroOpcion === preguntaActual.correcta) {
+          boton.classList.add("correcta");
+        } else if (numeroOpcion === seleccion) {
+          boton.classList.add("incorrecta");
+        }
+      });
+
+      const retroalimentacion = document.getElementById("retroalimentacion");
+      retroalimentacion.textContent =
+        `${esCorrecta ? "¡Correcto! " : "Casi. "}${preguntaActual.explicacion}`;
+      retroalimentacion.style.color = esCorrecta ? "#b5f36b" : "#ff958c";
+
+      document.getElementById("siguiente").disabled = false;
+    }
+
+    function mostrarResultado() {
+      document.getElementById("puntaje-final").textContent = puntaje;
+      document.getElementById("resumen").textContent =
+        `Respondiste los 10 retos y obtuviste ${puntaje} puntos.`;
+
+      let titulo;
+      let mensaje;
+
+      if (puntaje === 100) {
+        titulo = "¡Misión perfecta!";
+        mensaje = "¡Excelente trabajo! Tienes una gran comprensión de los ecosistemas.";
+      } else if (puntaje >= 70) {
+        titulo = "¡Gran trabajo, explorador!";
+        mensaje = "Ya tienes una buena base para entender cómo se conectan los ecosistemas.";
+      } else if (puntaje >= 40) {
+        titulo = "¡Vas por buen camino!";
+        mensaje = "Repasa las explicaciones y vuelve a intentarlo para seguir aprendiendo.";
+      } else {
+        titulo = "¡Cada reto enseña algo nuevo!";
+        mensaje = "Puedes jugar de nuevo y aprender más sobre nuestro planeta.";
+      }
+
+      document.getElementById("titulo-resultado").textContent = titulo;
+      document.getElementById("mensaje-final").textContent = mensaje;
+
+      const enlace = document.getElementById("enlace-formulario");
+      const nota = document.getElementById("nota-formulario");
+
+      if (ENLACE_FORMULARIO.startsWith("https://")) {
+        enlace.href = ENLACE_FORMULARIO;
+        enlace.onclick = null;
+        nota.textContent = "Tu opinión ayuda a mejorar el juego.";
+      } else {
+        enlace.href = "#";
+        enlace.onclick = (evento) => evento.preventDefault();
+        nota.textContent =
+          "Para activar la evaluación, pega el enlace de Google Forms en la variable ENLACE_FORMULARIO al inicio del código.";
+      }
+
+      mostrarPantalla(resultado);
+    }
+
+    document.getElementById("iniciar").addEventListener("click", iniciarJuego);
+    document.getElementById("jugar-de-nuevo").addEventListener("click", iniciarJuego);
+
+    document.getElementById("siguiente").addEventListener("click", () => {
+      if (indice < preguntas.length - 1) {
+        indice += 1;
+        mostrarPregunta();
+      } else {
+        mostrarResultado();
+      }
+    });
+  </script>
 </body>
 </html>
