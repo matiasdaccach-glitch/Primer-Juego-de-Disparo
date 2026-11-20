@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>EcoReto: Misión Biodiversidad</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#">✦ ECORRETO</a>
+    <span class="top-meta">MISIÓN BIODIVERSIDAD · CIENCIAS</span>
+  </header>
+
+  <main>
+    <section id="pantalla-inicio" class="hero">
+      <div>
+        <p class="eyebrow">EXPLORA · APRENDE · PROTEGE</p>
+        <h1>El futuro está<br>en tus <span>manos.</span></h1>
+        <p class="intro">
+          Supera los retos, aprende cómo funcionan los ecosistemas
+          y descubre cómo ayudar a proteger nuestro planeta.
+        </p>
+        <button class="primary-button" id="iniciar">INICIAR MISIÓN ↗</button>
+        <p class="duration">10 retos · 5 minutos</p>
+      </div>
+      <div class="planet" aria-label="Planeta verde">🌿</div>
+    </section>
+
+    <section id="pantalla-juego" class="game hidden">
+      <div class="game-heading">
+        <div>
+          <p class="eyebrow">MISIÓN EN CURSO</p>
+          <h2>Reto <span id="numero">1</span><small> / 10</small></h2>
+        </div>
+        <div class="score">✦ <span id="puntaje">0</span> PUNTOS</div>
+      </div>
+
+      <div class="progress">
+        <div id="progreso"></div>
+      </div>
+
+      <article class="question-card">
+        <p id="categoria" class="category"></p>
+        <h3 id="pregunta"></h3>
+        <div id="respuestas" class="answers"></div>
+        <p id="retroalimentacion" class="feedback" aria-live="polite"></p>
+        <button id="siguiente" class="primary-button" disabled>
+          SIGUIENTE RETO →
+        </button>
+      </article>
+    </section>
+
+    <section id="pantalla-final" class="results hidden">
+      <p class="eyebrow">MISIÓN COMPLETADA</p>
+      <h2 id="titulo-final"></h2>
+      <p id="resumen-final"></p>
+      <div class="final-score"><span id="puntaje-final">0</span><small> / 100</small></div>
+      <p id="mensaje-final"></p>
+      <button class="primary-button" id="jugar-de-nuevo">JUGAR DE NUEVO ↻</button>
+      <a id="enlace-formulario" class="form-link" href="#" target="_blank" rel="noopener">
+        EVALUAR EL JUEGO ↗
+      </a>
+      <p id="nota-formulario" class="form-note"></p>
+    </section>
+  </main>
+
+  <footer>ECORRETO · APRENDER PARA CUIDAR ✦</footer>
+</body>
+</html>
